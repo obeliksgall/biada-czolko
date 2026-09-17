@@ -1,0 +1,15 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Biada czółko",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Biada czółko",
+  "start_url": "https://obeliksgall.github.io/biada-czolko/",
+  "theme_color": "#ffffff",
+  "id": "Biada-czolko",
+  "categories": [
+    "games"
+  ]
+}
