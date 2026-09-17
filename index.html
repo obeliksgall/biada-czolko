@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muzyczne Czółko - Polskie Hity</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --primary-color: #ff6b6b;
+            --primary-hover: #ff5252;
+            --secondary-color: #4ecdc4;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 650px; /* Zwiększona szerokość pod tryb poziomy */
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-size: 1.5rem;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            font-weight: bold;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Ekran gry - dostosowany do poziomu */
+        #game-screen {
+            display: none;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .round-info {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .timer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e67e22;
+            margin: 0;
+        }
+
+        .word-card {
+            background-color: #fafafa;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 20px 10px;
+            margin-bottom: 15px;
+        }
+
+        .word-card h2 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-correct {
+            background-color: #2ecc71;
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        .btn-correct:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-wrong {
+            background-color: #e74c3c;
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+        .btn-wrong:hover {
+            background-color: #c0392b;
+        }
+
+        /* Ekran końca gry */
+        #end-screen {
+            display: none;
+        }
+
+        .score-display {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin: 10px 0;
+        }
+
+        .summary-list {
+            text-align: left;
+            margin: 10px 0;
+            max-height: 120px;
+            overflow-y: auto;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .tag-good { color: #27ae60; font-weight: bold; }
+        .tag-bad { color: #c0392b; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Ekran Startowy -->
+        <div id="start-screen">
+            <h1>🎵 Muzyczne Czółko</h1>
+            <p class="subtitle">Zgaduj polskie słowa z utworów muzycznych! Masz po 2 minuty na każdą z 8 rund.</p>
+            <button class="btn" onclick="startGame()">ROZPOCZNIJ GRĘ</button>
+        </div>
+
+        <!-- Ekran Gry -->
+        <div id="game-screen">
+            <div class="game-header">
+                <div class="round-info" id="round-counter">Runda 1 / 8</div>
+                <div class="timer" id="timer">02:00</div>
+            </div>
+            
+            <div class="word-card">
+                <h2 id="current-word">SŁOWO</h2>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-wrong" onclick="answer(false)">ŹLE</button>
+                <button class="btn btn-correct" onclick="answer(true)">DOBRZE</button>
+            </div>
+        </div>
+
+        <!-- Ekran Podsumowania -->
+        <div id="end-screen">
+            <h1>Koniec Gry!</h1>
+            <p class="subtitle">Twój ostateczny wynik:</p>
+            <div class="score-display" id="final-score">0 / 8</div>
+            
+            <div class="summary-list" id="summary-list">
+                <!-- Tutaj wpadną wyniki -->
+            </div>
+
+            <button class="btn" onclick="startGame()">ZAGRAJ PONOWNIE</button>
+        </div>
+    </div>
+
+    <script>
+        const polishSongWords = [
+            "Sen", "Miłość", "Wolność", "Bóg", "Krew", "Cisza", "Wiatr", "Deszcz", "Ogień", "Noc",
+            "Dzień", "Gwiazdy", "Łzy", "Czas", "Droga", "Dom", "Miasto", "Ręce", "Oczy", "Serce",
+            "Głowa", "Taniec", "Muzyka", "Głos", "Krzyk", "Prawda", "Kłamstwo", "Szczęście", "Życie", "Śmierć",
+            "Anioł", "Diabeł", "Ból", "Strach", "Nadzieja", "Wiara", "Pamięć", "Blask", "Cień", "Kolory",
+            "Złoto", "Srebro", "Kamień", "Piasek", "Morze", "Ocean", "Rzeka", "Las", "Drzewo", "Kwiat",
+            "Ptak", "Lot", "Skrzydła", "Bieg", "Krok", "Ślad", "Twarz", "Usta", "Włosy", "Oddech",
+            "Ciało", "Dusza", "Myśl", "Słowo", "List", "Książka", "Film", "Obraz", "Rama", "Okno",
+            "Drzwi", "Klucz", "Zamek", "Most", "Rampa", "Scena", "Bilet", "Pociąg", "Dworzec", "Autobus",
+            "Auto", "Mapa", "Kompas", "Północ", "Południe", "Wschód", "Zachód", "Ziemia", "Niebo",
+            "Słońce", "Księżyc", "Chmura", "Burza", "Tęcza", "Śnieg", "Mróz", "Lato", "Zima", "Wiosna",
+            "Jesień", "Kawiarnia", "Bar", "Stół", "Krzesło", "Szklanka", "Butelka", "Wino", "Piwo", "Kawa",
+            "Papieros", "Dym", "Popiół", "Klub", "Neon", "Ulica", "Aleja", "Park", "Ławka", "Latarnia",
+            "Plac", "Brama", "Podwórko", "Schody", "Strych", "Piwnica", "Korytarz", "Lustro", "Zegar", "Sekunda",
+            "Minuta", "Godzina", "Wieczorek", "Świt", "Zmierzch", "Pożegnanie", "Powitanie", "Tęsknota", "Zazdrość", "Gniew",
+            "Uśmiech", "Płacz", "Szept", "Pocałunek", "Dotyk", "Ramiona", "Plecy", "Brzuch", "Nogi", "Stopy"
+        ];
+
+        let currentRound = 0;
+        let score = 0;
+        let timerInterval = null;
+        let timeLeft = 120;
+        let availableWords = [];
+        let gameHistory = [];
+        let currentWord = "";
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function startGame() {
+            currentRound = 0;
+            score = 0;
+            gameHistory = [];
+            availableWords = [...polishSongWords];
+            shuffle(availableWords);
+
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('end-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+
+            nextRound();
+        }
+
+        function nextRound() {
+            if (currentRound >= 8 || availableWords.length === 0) {
+                endGame();
+                return;
+            }
+
+            currentRound++;
+            document.getElementById('round-counter').innerText = `Runda ${currentRound} / 8`;
+            
+            currentWord = availableWords.pop();
+            document.getElementById('current-word').innerText = currentWord;
+
+            clearInterval(timerInterval);
+            timeLeft = 120;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    answer(false);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+        }
+
+        function answer(isCorrect) {
+            clearInterval(timerInterval);
+
+            if (isCorrect) {
+                score++;
+                gameHistory.push({ word: currentWord, status: true });
+            } else {
+                gameHistory.push({ word: currentWord, status: false });
+            }
+
+            nextRound();
+        }
+
+        function endGame() {
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('end-screen').style.display = 'block';
+            
+            document.getElementById('final-score').innerText = `${score} / 8`;
+
+            let summaryListHTML = '';
+            gameHistory.forEach(item => {
+                let statusText = item.status ? '<span class="tag-good">DOBRZE</span>' : '<span class="tag-bad">ŹLE</span>';
+                summaryListHTML += `
+                    <div class="summary-item">
+                        <span>${item.word}</span>
+                        <span>${statusText}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('summary-list').innerHTML = summaryListHTML;
+        }
+    </script>
+</body>
+</html>
