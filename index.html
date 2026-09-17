@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muzyczne Czółko - Polskie Hity</title>
+    <title>Czółko - Wybór Kategorii</title>
     <style>
         :root {
             --bg-color: #f4f7f6;
@@ -34,7 +34,7 @@
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 650px; /* Zwiększona szerokość pod tryb poziomy */
+            max-width: 650px;
             padding: 20px;
             text-align: center;
             box-sizing: border-box;
@@ -43,12 +43,12 @@
         h1 {
             color: var(--primary-color);
             margin: 0 0 5px 0;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         p.subtitle {
             color: #666;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-bottom: 15px;
         }
 
@@ -74,7 +74,40 @@
             transform: scale(0.98);
         }
 
-        /* Ekran gry - dostosowany do poziomu */
+        /* Ekran kategorii - siatka dostosowana do 8 elementów */
+        #category-screen {
+            display: block;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+            max-height: 220px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .cat-btn {
+            background-color: #f8f9fa;
+            border: 2px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .cat-btn:hover {
+            border-color: var(--primary-color);
+            background-color: #fff0f0;
+            color: var(--primary-color);
+        }
+
+        /* Ekran gry */
         #game-screen {
             display: none;
         }
@@ -110,11 +143,10 @@
         }
 
         .word-card h2 {
-            font-size: 2.2rem;
+            font-size: 1.6rem;
             color: #2c3e50;
             margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .action-buttons {
@@ -183,11 +215,20 @@
 <body>
 
     <div class="container">
-        <!-- Ekran Startowy -->
-        <div id="start-screen">
-            <h1>🎵 Muzyczne Czółko</h1>
-            <p class="subtitle">Zgaduj polskie słowa z utworów muzycznych! Masz po 2 minuty na każdą z 8 rund.</p>
-            <button class="btn" onclick="startGame()">ROZPOCZNIJ GRĘ</button>
+        <!-- Ekran Wyboru Kategorii -->
+        <div id="category-screen">
+            <h1>🎭 Czółko - Wybierz kategorię</h1>
+            <p class="subtitle">Wybierz temat, masz po 2 minuty na każdą z 8 rund.</p>
+            <div class="categories-grid">
+                <button class="cat-btn" onclick="selectCategory('muzyka')">🎵 Słowa z Piosenek</button>
+                <button class="cat-btn" onclick="selectCategory('piosenki_tyt')">🎙️ Piosenki (Tytuł i Wykonawca)</button>
+                <button class="cat-btn" onclick="selectCategory('film')">🎬 Film</button>
+                <button class="cat-btn" onclick="selectCategory('superbohater')">🦸 Superbohater</button>
+                <button class="cat-btn" onclick="selectCategory('animacja')">🎨 Film animowany</button>
+                <button class="cat-btn" onclick="selectCategory('przedmioty')">📦 Przedmioty</button>
+                <button class="cat-btn" onclick="selectCategory('geografia')">🌍 Stolice i Państwa</button>
+                <button class="cat-btn" onclick="selectCategory('ludzie')">⭐ Sławni ludzie</button>
+            </div>
         </div>
 
         <!-- Ekran Gry -->
@@ -214,16 +255,17 @@
             <div class="score-display" id="final-score">0 / 8</div>
             
             <div class="summary-list" id="summary-list">
-                <!-- Tutaj wpadną wyniki -->
+                <!-- Wyniki -->
             </div>
 
-            <button class="btn" onclick="startGame()">ZAGRAJ PONOWNIE</button>
+            <button class="btn" onclick="resetToCategories()">WYBIERZ INNĄ KATEGORIĘ</button>
         </div>
     </div>
 
     <script>
-        const polishSongWords = [
-            "Sen", "Miłość", "Wolność", "Bóg", "Krew", "Cisza", "Wiatr", "Deszcz", "Ogień", "Noc",
+        const categories = {
+            muzyka: [
+                "Sen", "Miłość", "Wolność", "Bóg", "Krew", "Cisza", "Wiatr", "Deszcz", "Ogień", "Noc",
             "Dzień", "Gwiazdy", "Łzy", "Czas", "Droga", "Dom", "Miasto", "Ręce", "Oczy", "Serce",
             "Głowa", "Taniec", "Muzyka", "Głos", "Krzyk", "Prawda", "Kłamstwo", "Szczęście", "Życie", "Śmierć",
             "Anioł", "Diabeł", "Ból", "Strach", "Nadzieja", "Wiara", "Pamięć", "Blask", "Cień", "Kolory",
@@ -238,12 +280,54 @@
             "Plac", "Brama", "Podwórko", "Schody", "Strych", "Piwnica", "Korytarz", "Lustro", "Zegar", "Sekunda",
             "Minuta", "Godzina", "Wieczorek", "Świt", "Zmierzch", "Pożegnanie", "Powitanie", "Tęsknota", "Zazdrość", "Gniew",
             "Uśmiech", "Płacz", "Szept", "Pocałunek", "Dotyk", "Ramiona", "Plecy", "Brzuch", "Nogi", "Stopy"
-        ];
+            ],
+            piosenki_tyt: [
+                "Sen o Warszawie - Czesław Niemen", "Mniej niż zero - Lady Pank", "Dni, których nie znamy - Marek Grechuta",
+                "Arahja - Kult", "Przez twe oczy zielone - Akcent", "Zawsze tam, gdzie ty - Lady Pank",
+                "Autostrada do wolności - Perfect", "Dmuchawce, latawce, wiatr - Urszula", "Ostatni taniec - Sanah",
+                "Małomiasteczkowy - Dawid Podsiadło", "Początek - Podsiadło / Zalewski / Kortez", "Cykady na Cykladach - Maanam",
+                "Kawiarnia - Kortez", "Złoty piasek - Mrozu", "Oprócz błękitnego nieba - Maanam", "Kiedy powiem sobie dość - O.N.A.",
+                "Kochać inaczej - De Mono", "Błysk - Brodka", "Statki na niebie - De Mono", "Wszystko mi mówi, że mnie ktoś pokochał - Skaldowie"
+            ],
+            film: [
+                "Gladiator", "Titanic", "Incepcja", "Matrix", "Kiler", "Psy", "Avatar", "Skazani na Shawshank",
+                "Ojciec chrzestny", "Pulp Fiction", "Forrest Gump", "Terminator", "Rocky", "Szczęki", "Interstellar",
+                "Szybcy i wściekli", "Zielona mila", "Król Lew", "Władca Pierścieni", "Harry Potter"
+            ],
+            superbohater: [
+                "Batman", "Superman", "Spider-Man", "Iron Man", "Kapitan Ameryka", "Thor", "Hulk", "Wolverine",
+                "Deadpool", "Flash", "Aquaman", "Wonder Woman", "Czarna Wdowa", "Czarna Pantera", "Doktor Strange",
+                "Ant-Man", "Thanos", "Joker", "Harley Quinn", "Venom"
+            ],
+            animacja: [
+                "Król Lew", "Shrek", "Kraina Lodu", "Toy Story", "Gdzie jest Nemo?", "Madagaskar", "Minionki",
+                "Auta", "Epoka lodowcowa", "Iniemamocni", "Ratatuj", "Odlot", "W głowie się nie mieści", "Coco",
+                "Vaiana", "Zaplątani", "Mulan", "Aladyn", "Piękna i Bestia", "Mała Syrenka"
+            ],
+            przedmioty: [
+                "Długopis", "Szklanka", "Krzesło", "Klocek hamulcowy", "Prostownica", "Zmywarka", "Lustro",
+                "Odkurzacz", "Mikser", "Zegarek", "Poduszka", "Klucze", "Grzebień", "Parasol", "Portfel",
+                "Latarka", "Nożyczki", "Suszarka", "Słuchawki", "Walizka"
+            ],
+            geografia: [
+                "Polska", "Warszawa", "Francja", "Paryż", "Włochy", "Rzym", "Hiszpania", "Madryt", 
+                "Niemcy", "Berlin", "Japonia", "Tokio", "Wielka Brytania", "Londyn", "Stany Zjednoczone", 
+                "Waszyngton", "Grecja", "Ateny", "Egipt", "Kair", "Brazylia", "Brasilia", 
+                "Kanada", "Ottawa", "Australia", "Canberra", "Norwegia", "Oslo", "Szwecja", "Sztokholm", 
+                "Czechy", "Praga", "Węgry", "Budapeszt", "Austria", "Wiedeń", "Portugalia", "Lizbona", "Chiny", "Pekin"
+            ],
+            ludzie: [
+                "Robert Lewandowski", "Albert Einstein", "Napoleon Bonaparte", "Mikołaj Kopernik", "Elon Musk",
+                "Cristiano Ronaldo", "Leo Messi", "Marie Curie-Skłodowska", "Jan Paweł II", "Cleopatra",
+                "Leonardo da Vinci", "William Szekspir", "Adam Małysz", "Iga Świątek", "Freddie Mercury",
+                "Michael Jackson", "Winston Churchill", "Abraham Lincoln", "Pablo Picasso", "Steve Jobs"
+            ]
+        };
 
         let currentRound = 0;
         let score = 0;
         let timerInterval = null;
-        let timeLeft = 120;
+        let timeLeft = 120; // 2 minuty
         let availableWords = [];
         let gameHistory = [];
         let currentWord = "";
@@ -258,18 +342,24 @@
             return array;
         }
 
-        function startGame() {
+        function selectCategory(categoryKey) {
             currentRound = 0;
             score = 0;
             gameHistory = [];
-            availableWords = [...polishSongWords];
+            
+            availableWords = [...categories[categoryKey]];
             shuffle(availableWords);
 
-            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('category-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'none';
             document.getElementById('game-screen').style.display = 'block';
 
             nextRound();
+        }
+
+        function resetToCategories() {
+            document.getElementById('end-screen').style.display = 'none';
+            document.getElementById('category-screen').style.display = 'block';
         }
 
         function nextRound() {
