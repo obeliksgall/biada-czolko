@@ -74,7 +74,7 @@
             transform: scale(0.98);
         }
 
-        /* Ekran kategorii - siatka dostosowana do 8 elementów */
+        /* Ekran kategorii */
         #category-screen {
             display: block;
         }
@@ -84,7 +84,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
             margin-bottom: 15px;
-            max-height: 220px;
+            max-height: 240px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -218,7 +218,7 @@
         <!-- Ekran Wyboru Kategorii -->
         <div id="category-screen">
             <h1>🎭 Czółko - Wybierz kategorię</h1>
-            <p class="subtitle">Wybierz temat, masz po 2 minuty na każdą z 8 rund.</p>
+            <p class="subtitle">Wybierz temat, masz po 2 minuty na rundę.</p>
             <div class="categories-grid">
                 <button class="cat-btn" onclick="selectCategory('muzyka')">🎵 Słowa z Piosenek</button>
                 <button class="cat-btn" onclick="selectCategory('piosenki_tyt')">🎙️ Piosenki (Tytuł i Wykonawca)</button>
@@ -228,13 +228,14 @@
                 <button class="cat-btn" onclick="selectCategory('przedmioty')">📦 Przedmioty</button>
                 <button class="cat-btn" onclick="selectCategory('geografia')">🌍 Stolice i Państwa</button>
                 <button class="cat-btn" onclick="selectCategory('ludzie')">⭐ Sławni ludzie</button>
+                <button class="cat-btn" onclick="selectCategory('nie_uwierzysz')">✨ Nie uwierzysz</button>
             </div>
         </div>
 
         <!-- Ekran Gry -->
         <div id="game-screen">
             <div class="game-header">
-                <div class="round-info" id="round-counter">Runda 1 / 8</div>
+                <div class="round-info" id="round-counter">Runda 1</div>
                 <div class="timer" id="timer">02:00</div>
             </div>
             
@@ -252,7 +253,7 @@
         <div id="end-screen">
             <h1>Koniec Gry!</h1>
             <p class="subtitle">Twój ostateczny wynik:</p>
-            <div class="score-display" id="final-score">0 / 8</div>
+            <div class="score-display" id="final-score">0</div>
             
             <div class="summary-list" id="summary-list">
                 <!-- Wyniki -->
@@ -266,20 +267,20 @@
         const categories = {
             muzyka: [
                 "Sen", "Miłość", "Wolność", "Bóg", "Krew", "Cisza", "Wiatr", "Deszcz", "Ogień", "Noc",
-            "Dzień", "Gwiazdy", "Łzy", "Czas", "Droga", "Dom", "Miasto", "Ręce", "Oczy", "Serce",
-            "Głowa", "Taniec", "Muzyka", "Głos", "Krzyk", "Prawda", "Kłamstwo", "Szczęście", "Życie", "Śmierć",
-            "Anioł", "Diabeł", "Ból", "Strach", "Nadzieja", "Wiara", "Pamięć", "Blask", "Cień", "Kolory",
-            "Złoto", "Srebro", "Kamień", "Piasek", "Morze", "Ocean", "Rzeka", "Las", "Drzewo", "Kwiat",
-            "Ptak", "Lot", "Skrzydła", "Bieg", "Krok", "Ślad", "Twarz", "Usta", "Włosy", "Oddech",
-            "Ciało", "Dusza", "Myśl", "Słowo", "List", "Książka", "Film", "Obraz", "Rama", "Okno",
-            "Drzwi", "Klucz", "Zamek", "Most", "Rampa", "Scena", "Bilet", "Pociąg", "Dworzec", "Autobus",
-            "Auto", "Mapa", "Kompas", "Północ", "Południe", "Wschód", "Zachód", "Ziemia", "Niebo",
-            "Słońce", "Księżyc", "Chmura", "Burza", "Tęcza", "Śnieg", "Mróz", "Lato", "Zima", "Wiosna",
-            "Jesień", "Kawiarnia", "Bar", "Stół", "Krzesło", "Szklanka", "Butelka", "Wino", "Piwo", "Kawa",
-            "Papieros", "Dym", "Popiół", "Klub", "Neon", "Ulica", "Aleja", "Park", "Ławka", "Latarnia",
-            "Plac", "Brama", "Podwórko", "Schody", "Strych", "Piwnica", "Korytarz", "Lustro", "Zegar", "Sekunda",
-            "Minuta", "Godzina", "Wieczorek", "Świt", "Zmierzch", "Pożegnanie", "Powitanie", "Tęsknota", "Zazdrość", "Gniew",
-            "Uśmiech", "Płacz", "Szept", "Pocałunek", "Dotyk", "Ramiona", "Plecy", "Brzuch", "Nogi", "Stopy"
+                "Dzień", "Gwiazdy", "Łzy", "Czas", "Droga", "Dom", "Miasto", "Ręce", "Oczy", "Serce",
+                "Głowa", "Taniec", "Muzyka", "Głos", "Krzyk", "Prawda", "Kłamstwo", "Szczęście", "Życie", "Śmierć",
+                "Anioł", "Diabeł", "Ból", "Strach", "Nadzieja", "Wiara", "Pamięć", "Blask", "Cień", "Kolory",
+                "Złoto", "Srebro", "Kamień", "Piasek", "Morze", "Ocean", "Rzeka", "Las", "Drzewo", "Kwiat",
+                "Ptak", "Lot", "Skrzydła", "Bieg", "Krok", "Ślad", "Twarz", "Usta", "Włosy", "Oddech",
+                "Ciało", "Dusza", "Myśl", "Słowo", "List", "Książka", "Film", "Obraz", "Rama", "Okno",
+                "Drzwi", "Klucz", "Zamek", "Most", "Rampa", "Scena", "Bilet", "Pociąg", "Dworzec", "Autobus",
+                "Auto", "Mapa", "Kompas", "Północ", "Południe", "Wschód", "Zachód", "Ziemia", "Niebo",
+                "Słońce", "Księżyc", "Chmura", "Burza", "Tęcza", "Śnieg", "Mróz", "Lato", "Zima", "Wiosna",
+                "Jesień", "Kawiarnia", "Bar", "Stół", "Krzesło", "Szklanka", "Butelka", "Wino", "Piwo", "Kawa",
+                "Papieros", "Dym", "Popiół", "Klub", "Neon", "Ulica", "Aleja", "Park", "Ławka", "Latarnia",
+                "Plac", "Brama", "Podwórko", "Schody", "Strych", "Piwnica", "Korytarz", "Lustro", "Zegar", "Sekunda",
+                "Minuta", "Godzina", "Wieczorek", "Świt", "Zmierzch", "Pożegnanie", "Powitanie", "Tęsknota", "Zazdrość", "Gniew",
+                "Uśmiech", "Płacz", "Szept", "Pocałunek", "Dotyk", "Ramiona", "Plecy", "Brzuch", "Nogi", "Stopy"
             ],
             piosenki_tyt: [
                 "Sen o Warszawie - Czesław Niemen", "Mniej niż zero - Lady Pank", "Dni, których nie znamy - Marek Grechuta",
@@ -321,11 +322,18 @@
                 "Cristiano Ronaldo", "Leo Messi", "Marie Curie-Skłodowska", "Jan Paweł II", "Cleopatra",
                 "Leonardo da Vinci", "William Szekspir", "Adam Małysz", "Iga Świątek", "Freddie Mercury",
                 "Michael Jackson", "Winston Churchill", "Abraham Lincoln", "Pablo Picasso", "Steve Jobs"
+            ],
+            nie_uwierzysz: [
+                "Nie zesraj się", "Wszyscy umrzemy", "Nie chcę mi się z Tobą gadać", "Fajrant", 
+                "Mango", "Różowy", "Bitch face", "Jest życie w człowieku?", "Medjugorie", 
+                "Pielgrzymka", "Nowe nie znałam", "Mała Hania w środku nie jest zadowolana", 
+                "Zapasowy karmiciel", "Daniel", "Życie jest piękne ale nie Twoje akurat"
             ]
         };
 
         let currentRound = 0;
         let score = 0;
+        let totalRounds = 0;
         let timerInterval = null;
         let timeLeft = 120; // 2 minuty
         let availableWords = [];
@@ -349,6 +357,7 @@
             
             availableWords = [...categories[categoryKey]];
             shuffle(availableWords);
+            totalRounds = availableWords.length; // Gra trwać będzie tyle rund, ile haseł ma kategoria
 
             document.getElementById('category-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'none';
@@ -363,13 +372,13 @@
         }
 
         function nextRound() {
-            if (currentRound >= 8 || availableWords.length === 0) {
+            if (availableWords.length === 0) {
                 endGame();
                 return;
             }
 
             currentRound++;
-            document.getElementById('round-counter').innerText = `Runda ${currentRound} / 8`;
+            document.getElementById('round-counter').innerText = `Runda ${currentRound} / ${totalRounds}`;
             
             currentWord = availableWords.pop();
             document.getElementById('current-word').innerText = currentWord;
@@ -413,7 +422,7 @@
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'block';
             
-            document.getElementById('final-score').innerText = `${score} / 8`;
+            document.getElementById('final-score').innerText = `${score} / ${totalRounds}`;
 
             let summaryListHTML = '';
             gameHistory.forEach(item => {
