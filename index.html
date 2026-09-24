@@ -34,7 +34,7 @@
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 650px;
+            max-width: 750px; /* Nieco szerszy kontener, żeby 3 kolumny dobrze wyglądały */
             padding: 20px;
             text-align: center;
             box-sizing: border-box;
@@ -74,17 +74,17 @@
             transform: scale(0.98);
         }
 
-        /* Ekran kategorii */
+        /* Ekran kategorii - zmienione na 3 kolumny */
         #category-screen {
             display: block;
         }
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             margin-bottom: 15px;
-            max-height: 240px;
+            max-height: 250px;
             overflow-y: auto;
             padding-right: 4px;
         }
@@ -93,12 +93,17 @@
             background-color: #f8f9fa;
             border: 2px solid var(--border-color);
             color: var(--text-color);
-            padding: 10px;
-            font-size: 0.9rem;
+            padding: 10px 6px;
+            font-size: 0.85rem;
             border-radius: 10px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 50px;
         }
 
         .cat-btn:hover {
@@ -357,7 +362,7 @@
             
             availableWords = [...categories[categoryKey]];
             shuffle(availableWords);
-            totalRounds = availableWords.length; // Gra trwać będzie tyle rund, ile haseł ma kategoria
+            totalRounds = availableWords.length;
 
             document.getElementById('category-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'none';
