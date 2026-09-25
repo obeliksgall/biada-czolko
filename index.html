@@ -34,7 +34,7 @@
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 750px; /* Nieco szerszy kontener, żeby 3 kolumny dobrze wyglądały */
+            max-width: 750px;
             padding: 20px;
             text-align: center;
             box-sizing: border-box;
@@ -74,7 +74,7 @@
             transform: scale(0.98);
         }
 
-        /* Ekran kategorii - zmienione na 3 kolumny */
+        /* Ekran kategorii - 3 kolumny */
         #category-screen {
             display: block;
         }
@@ -110,6 +110,19 @@
             border-color: var(--primary-color);
             background-color: #fff0f0;
             color: var(--primary-color);
+        }
+
+        /* Ekran odliczania przed startem */
+        #countdown-screen {
+            display: none;
+            padding: 30px 0;
+        }
+
+        .countdown-number {
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 20px 0;
         }
 
         /* Ekran gry */
@@ -237,6 +250,13 @@
             </div>
         </div>
 
+        <!-- Ekran Odliczania -->
+        <div id="countdown-screen">
+            <h1>Przygotuj się!</h1>
+            <p class="subtitle">Przyóż telefon do czoła...</p>
+            <div class="countdown-number" id="countdown-display">5</div>
+        </div>
+
         <!-- Ekran Gry -->
         <div id="game-screen">
             <div class="game-header">
@@ -340,7 +360,9 @@
         let score = 0;
         let totalRounds = 0;
         let timerInterval = null;
+        let countdownInterval = null;
         let timeLeft = 120; // 2 minuty
+        let countdownTime = 5; // 5 sekund odliczania
         let availableWords = [];
         let gameHistory = [];
         let currentWord = "";
@@ -364,15 +386,38 @@
             shuffle(availableWords);
             totalRounds = availableWords.length;
 
+            // Ukryj ekran kategorii i pokaż ekran odliczania
             document.getElementById('category-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'none';
-            document.getElementById('game-screen').style.display = 'block';
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('countdown-screen').style.display = 'block';
 
-            nextRound();
+            startCountdown();
+        }
+
+        function startCountdown() {
+            countdownTime = 5;
+            document.getElementById('countdown-display').innerText = countdownTime;
+
+            clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                countdownTime--;
+                document.getElementById('countdown-display').innerText = countdownTime;
+
+                if (countdownTime <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('countdown-screen').style.display = 'none';
+                    document.getElementById('game-screen').style.display = 'block';
+                    nextRound();
+                }
+            }, 1000);
         }
 
         function resetToCategories() {
+            clearInterval(timerInterval);
+            clearInterval(countdownInterval);
             document.getElementById('end-screen').style.display = 'none';
+            document.getElementById('countdown-screen').style.display = 'none';
             document.getElementById('category-screen').style.display = 'block';
         }
 
