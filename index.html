@@ -385,6 +385,9 @@
             
             availableWords = [...categories[categoryKey]];
             shuffle(availableWords);
+            
+            availableWords = availableWords.slice(0, 5);
+            
             totalRounds = availableWords.length;
 
             // Ukryj ekran kategorii i pokaż ekran odliczania
