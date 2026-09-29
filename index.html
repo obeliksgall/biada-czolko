@@ -14,7 +14,6 @@
             --secondary-color: #4ecdc4;
             --border-color: #e0e0e0;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
@@ -28,7 +27,6 @@
             box-sizing: border-box;
             overflow-x: hidden;
         }
-
         .container {
             background-color: var(--card-bg);
             border-radius: 16px;
@@ -39,19 +37,16 @@
             text-align: center;
             box-sizing: border-box;
         }
-
         h1 {
             color: var(--primary-color);
             margin: 0 0 5px 0;
             font-size: 1.4rem;
         }
-
         p.subtitle {
             color: #666;
             font-size: 0.8rem;
             margin-bottom: 15px;
         }
-
         .btn {
             background-color: var(--primary-color);
             color: white;
@@ -65,20 +60,16 @@
             width: 100%;
             box-sizing: border-box;
         }
-
         .btn:hover {
             background-color: var(--primary-hover);
         }
-
         .btn:active {
             transform: scale(0.98);
         }
-
         /* Ekran kategorii - 3 kolumny */
         #category-screen {
             display: block;
         }
-
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -88,7 +79,6 @@
             overflow-y: auto;
             padding-right: 4px;
         }
-
         .cat-btn {
             background-color: #f8f9fa;
             border: 2px solid var(--border-color);
@@ -105,38 +95,32 @@
             text-align: center;
             min-height: 50px;
         }
-
         .cat-btn:hover {
             border-color: var(--primary-color);
             background-color: #fff0f0;
             color: var(--primary-color);
         }
-
         /* Ekran odliczania przed startem */
         #countdown-screen {
             display: none;
             padding: 30px 0;
         }
-
         .countdown-number {
             font-size: 4rem;
             font-weight: bold;
             color: var(--primary-color);
             margin: 20px 0;
         }
-
         /* Ekran gry */
         #game-screen {
             display: none;
         }
-
         .game-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
-
         .round-info {
             font-size: 0.85rem;
             color: #888;
@@ -144,14 +128,12 @@
             letter-spacing: 1px;
             margin: 0;
         }
-
         .timer {
             font-size: 1.2rem;
             font-weight: bold;
             color: #e67e22;
             margin: 0;
         }
-
         .word-card {
             background-color: #fafafa;
             border: 2px dashed var(--border-color);
@@ -159,19 +141,16 @@
             padding: 20px 10px;
             margin-bottom: 15px;
         }
-
         .word-card h2 {
             font-size: 1.6rem;
             color: #2c3e50;
             margin: 0;
             letter-spacing: 0.5px;
         }
-
         .action-buttons {
             display: flex;
             gap: 15px;
         }
-
         .btn-correct {
             background-color: #2ecc71;
             flex: 1;
@@ -181,7 +160,6 @@
         .btn-correct:hover {
             background-color: #27ae60;
         }
-
         .btn-wrong {
             background-color: #e74c3c;
             flex: 1;
@@ -191,19 +169,16 @@
         .btn-wrong:hover {
             background-color: #c0392b;
         }
-
         /* Ekran końca gry */
         #end-screen {
             display: none;
         }
-
         .score-display {
             font-size: 2.2rem;
             font-weight: bold;
             color: var(--secondary-color);
             margin: 10px 0;
         }
-
         .summary-list {
             text-align: left;
             margin: 10px 0;
@@ -213,7 +188,6 @@
             border-bottom: 1px solid var(--border-color);
             padding: 8px 0;
         }
-
         .summary-item {
             display: flex;
             justify-content: space-between;
@@ -221,17 +195,14 @@
             font-size: 0.9rem;
             border-bottom: 1px solid #f0f0f0;
         }
-
         .summary-item:last-child {
             border-bottom: none;
         }
-
         .tag-good { color: #27ae60; font-weight: bold; }
         .tag-bad { color: #c0392b; font-weight: bold; }
     </style>
 </head>
 <body>
-
     <div class="container">
         <!-- Ekran Wyboru Kategorii -->
         <div id="category-screen">
@@ -249,14 +220,12 @@
                 <button class="cat-btn" onclick="selectCategory('nie_uwierzysz')">✨ Nie uwierzysz</button>
             </div>
         </div>
-
         <!-- Ekran Odliczania -->
         <div id="countdown-screen">
             <h1>Przygotuj się!</h1>
             <p class="subtitle">Przyóż telefon do czoła...</p>
             <div class="countdown-number" id="countdown-display">5</div>
         </div>
-
         <!-- Ekran Gry -->
         <div id="game-screen">
             <div class="game-header">
@@ -267,13 +236,11 @@
             <div class="word-card">
                 <h2 id="current-word">SŁOWO</h2>
             </div>
-
             <div class="action-buttons">
                 <button class="btn btn-wrong" onclick="answer(false)">ŹLE</button>
                 <button class="btn btn-correct" onclick="answer(true)">DOBRZE</button>
             </div>
         </div>
-
         <!-- Ekran Podsumowania -->
         <div id="end-screen">
             <h1>Koniec Gry!</h1>
@@ -283,11 +250,9 @@
             <div class="summary-list" id="summary-list">
                 <!-- Wyniki -->
             </div>
-
             <button class="btn" onclick="resetToCategories()">WYBIERZ INNĄ KATEGORIĘ</button>
         </div>
     </div>
-
     <script>
         const categories = {
             muzyka: [
@@ -356,7 +321,6 @@
                 "Za małe grzechy bozia każe od razu"
             ]
         };
-
         let currentRound = 0;
         let score = 0;
         let totalRounds = 0;
@@ -367,7 +331,6 @@
         let availableWords = [];
         let gameHistory = [];
         let currentWord = "";
-
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
             while (currentIndex != 0) {
@@ -377,7 +340,6 @@
             }
             return array;
         }
-
         function selectCategory(categoryKey) {
             currentRound = 0;
             score = 0;
@@ -386,28 +348,24 @@
             availableWords = [...categories[categoryKey]];
             shuffle(availableWords);
             
+            // TAA ZMIANA: Zostaw maksymalnie 5 słów po przetasowaniu
             availableWords = availableWords.slice(0, 5);
             
-            totalRounds = availableWords.length;
-
+            totalRounds = availableWords.length; // Teraz będzie równe max 5
             // Ukryj ekran kategorii i pokaż ekran odliczania
             document.getElementById('category-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'none';
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('countdown-screen').style.display = 'block';
-
             startCountdown();
         }
-
         function startCountdown() {
             countdownTime = 5;
             document.getElementById('countdown-display').innerText = countdownTime;
-
             clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
                 countdownTime--;
                 document.getElementById('countdown-display').innerText = countdownTime;
-
                 if (countdownTime <= 0) {
                     clearInterval(countdownInterval);
                     document.getElementById('countdown-screen').style.display = 'none';
@@ -416,7 +374,6 @@
                 }
             }, 1000);
         }
-
         function resetToCategories() {
             clearInterval(timerInterval);
             clearInterval(countdownInterval);
@@ -424,19 +381,16 @@
             document.getElementById('countdown-screen').style.display = 'none';
             document.getElementById('category-screen').style.display = 'block';
         }
-
         function nextRound() {
             if (availableWords.length === 0) {
                 endGame();
                 return;
             }
-
             currentRound++;
             document.getElementById('round-counter').innerText = `Runda ${currentRound} / ${totalRounds}`;
             
             currentWord = availableWords.pop();
             document.getElementById('current-word').innerText = currentWord;
-
             clearInterval(timerInterval);
             timeLeft = 120;
             updateTimerDisplay();
@@ -450,7 +404,6 @@
                 }
             }, 1000);
         }
-
         function updateTimerDisplay() {
             let minutes = Math.floor(timeLeft / 60);
             let seconds = timeLeft % 60;
@@ -458,26 +411,21 @@
             seconds = seconds < 10 ? "0" + seconds : seconds;
             document.getElementById('timer').innerText = `${minutes}:${seconds}`;
         }
-
         function answer(isCorrect) {
             clearInterval(timerInterval);
-
             if (isCorrect) {
                 score++;
                 gameHistory.push({ word: currentWord, status: true });
             } else {
                 gameHistory.push({ word: currentWord, status: false });
             }
-
             nextRound();
         }
-
         function endGame() {
             document.getElementById('game-screen').style.display = 'none';
             document.getElementById('end-screen').style.display = 'block';
             
             document.getElementById('final-score').innerText = `${score} / ${totalRounds}`;
-
             let summaryListHTML = '';
             gameHistory.forEach(item => {
                 let statusText = item.status ? '<span class="tag-good">DOBRZE</span>' : '<span class="tag-bad">ŹLE</span>';
